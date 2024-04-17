@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import { Box, Text, Flex, Button } from "@chakra-ui/react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
+import Item from "./Item";
 
 
-const Column = ({ name, items, deleteColumn, openItemDialog, id }) => {
+const Column = ({ name, items, deleteColumn, openItemDialog, id, deleteItem }) => {
   return (
     <Box
       className={`bg-slate-200 hover:bg-slate-100 hover:shadow-lg outline-2 outline-slate-400`}
@@ -26,20 +27,7 @@ const Column = ({ name, items, deleteColumn, openItemDialog, id }) => {
       <Flex direction="column">
         {items && items.length > 0 ? (
           items.map((item, index) => (
-            <Box
-              key={item.id}
-              p={2}
-              mb={2}
-              borderWidth="1px"
-              borderRadius="md"
-              borderColor="gray.300"
-              backgroundColor="white"
-              boxShadow="sm"
-            >
-
-              <Text className="text-gray-800 font-sans font-medium ">{item.name}</Text>
-              <Text className="text-sm text-gray-400">{item.deadline}</Text> {/* Render the deadline */}
-            </Box>
+            <Item item={item} key={item.id} deleteItem={() => deleteItem(id, item.id)}/>
           ))
         ) : (
           <Text>No items to display.</Text>

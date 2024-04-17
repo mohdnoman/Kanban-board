@@ -15,7 +15,6 @@ export default function Home() {
   const [addItemDialogOpen, setAddItemDialogOpen] = useState(false);
   const [selectedColumnId, setSelectedColumnId] = useState(null);
   const [columns, setColumns] = useState([]);
-  console.log(columns);
 
   useEffect(() => {
     const storedColumns = JSON.parse(localStorage.getItem('columns'));
@@ -70,6 +69,21 @@ export default function Home() {
     localStorage.setItem('columns', JSON.stringify(updatedColumns));
   };
 
+  const deleteItem = (columnId, itemId) => {
+    setColumns(prevColumns => {
+      const updatedColumns = prevColumns.map(column => {
+        if (column.id === columnId) {
+          return {
+            ...column,
+            items: column.items.filter(item => item.id !== itemId)
+          };
+        }
+        return column;
+      });
+      return updatedColumns;
+    });
+  };
+
   return (
     <DndContext>
       <div className='bg-gradient-to-br from-blue-100 to-teal-100'>
@@ -119,6 +133,7 @@ export default function Home() {
                     items={column.items}
                     deleteColumn={deleteColumn}
                     openItemDialog={() => handleOpenAddItemDialog(column.id)}
+                    deleteItem={deleteItem}
                   />
                 </SortableContext>
               ))}
